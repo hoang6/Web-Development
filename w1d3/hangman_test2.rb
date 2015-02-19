@@ -5,12 +5,12 @@ class Game
   end
 
   def play
-    @word_so_far = @checker.pick_secret_word
-    puts length = @word_so_far.length
+    @current_guess = @checker.pick_secret_word
+    puts length = @current_guess.length
 
-    while @word_so_far.include?("_")
+    while @current_guess.include?("_")
       guess = @guesser.guess
-      @word_so_far = @checker.check_guess(guess, @word_so_far)
+      @current_guess = @checker.check_guess(guess, @current_guess)
       display
     end
 
@@ -18,11 +18,11 @@ class Game
   end
 
   def display
-    puts @word_so_far.join
+    puts @current_guess.join
   end
 end
 
-class Human
+class HumanPlayer
   def pick_secret_word
     puts "Give word's length:"
     length = gets.chomp.to_i
@@ -39,7 +39,7 @@ class Human
   # end
 end
 
-class Computer
+class ComputerPlayer
 
   def initialize
     @dictionary_words = File.readlines("dictionary.txt").map(&:chomp)
@@ -50,7 +50,7 @@ class Computer
     Array.new(@secret_word.length, '_')
   end
 
-  def check_guess(guess, prev_word)
+  def check_guess(guess, prev_word) 
     new_word = prev_word
     @secret_word.each_with_index do |letter, index|
       new_word[index] = guess if guess == letter

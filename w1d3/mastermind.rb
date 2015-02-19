@@ -1,90 +1,85 @@
 class Game
   def play
-    @computer_code = Code.random
-    p @computer_code
-    turns = 0
-    win = false
+    @computer_code = Code.random_pegs
 
-    until win || turns == 10
-      player_code = create_player_code
-      win = match_status(player_code)
+    turns = 0
+    perfect_match = false
+
+    until perfect_match || turns == 10
+      player_guess = taking_guess
+      perfect_match = matched?(player_guess)
 
       turns += 1
     end
 
-    puts win ? "You won!" : "You lost!"
+    puts perfect_match ? "You won!" : "You lost!"
   end
 
-  def match_status(player_code)
-    exact_matches, near_matches = @computer_code.find_matches(player_code)
-    puts "Exact Matches: #{exact_matches}. Near Matches: #{near_matches}."
+  def matched?(player_guess)
+    exact_matches, near_matches = @computer_code.find_matches(player_guess)
+    puts "Exact Matches: #{exact_matches}| Near Matches: #{near_matches}."
 
     exact_matches == 4
   end
 
-  def create_player_code
-    print "Please enter a guess: "
-    guesses = gets.chomp.chars
+  def taking_guess
+    print "Enter a guess:"
+    guess = gets.chomp.upcase.chars
 
-    create_code(guesses)
-  end
-
-  def create_code(guesses)
-    Code.new(guesses)
+    Code.new(guess)
   end
 end
 
 class Code
   COLORS = %w(R G B Y P O)
-  attr_accessor :pegs
+  attr_reader :pegs
 
-  def initialize(coded_guesses)
-    @pegs = coded_guesses
+  def initialize(guess)
+    @pegs = guess
   end
 
-  def self.random
+  def self.random_pegs
     shuffled_pegs = []
     4.times { shuffled_pegs << COLORS.sample }
     Code.new(shuffled_pegs)
   end
 
   def find_matches(other_code)
-    my_pegs = @pegs.dup
+    comp_pegs = @pegs.dup
     other_pegs = other_code.pegs.dup
 
-    exact_matches = find_exact_matches(my_pegs, other_pegs)
-    near_matches = find_near_matches(my_pegs, other_pegs)
+    exact_matches = find_exact_matches(comp_pegs, other_pegs)
+    near_matches = find_near_matches(comp_pegs, other_pegs)
 
     [exact_matches, near_matches]
   end
 
-  def find_exact_matches(my_pegs, other_pegs)
+  def find_exact_matches(comp_pegs, other_pegs)
     exact_matches = 0
 
-    index = my_pegs.length - 1
+    index = comp_pegs.length - 1
     while index >= 0
-      if my_pegs[index] == other_pegs[index]
+      if comp_pegs[index] == other_pegs[index]
         exact_matches += 1
-        my_pegs.delete_at(index)
+        comp_pegs.delete_at(index)
         other_pegs.delete_at(index)
       end
       index -= 1
     end
 
-    p "After Exact matches: #{my_pegs}, #{other_pegs}"
     exact_matches
   end
 
-  def find_near_matches(my_pegs, other_pegs)
+  def find_near_matches(comp_pegs, other_pegs)
     near_matches = 0
 
-    index = my_pegs.length - 1
+    index = comp_pegs.length - 1
     while index >= 0
-      my_peg = my_pegs[index]
+      my_peg = comp_pegs[index]
       if other_pegs.include?(my_peg)
         near_matches += 1
         other_pegs.delete(my_peg)
-        my_pegs.delete(my_peg)
+        comp_pegs.delete(my_peg)
       end
       index -= 1
     end
