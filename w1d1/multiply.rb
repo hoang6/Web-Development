@@ -38,7 +38,7 @@ end
 
 p multiply_array([1,2,4])
 
-p median([0,1,2,3,5])
-p median([0,1,2,4,4,5])
+p median([0, 1, 2, 3, 5])
+p median([0, 1, 2, 4, 4, 5])
 
 p concatenate(["Hello world", "App Academy", "Test"])
