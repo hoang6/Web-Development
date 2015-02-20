@@ -1,18 +1,21 @@
-def bsearch(array, target)
-  new_array = array.dup.sort
+def bsearch(nums, target)
+  p nums
+  return nil if nums.count == 0
 
-  pivot = new_array.length / 2
+  pivot = nums.length / 2
 
-  if target == new_array[pivot]
+  if target == nums[pivot]
     pivot
-  elsif new_array.count == 1 && (target != new_array[pivot])
-    nil
+  elsif target < nums[pivot]
+    bsearch(nums.take(pivot), target)
   else
-    if target < new_array[pivot]
-      bsearch(new_array[XXX...pivot], target)
-    else
-      bsearch(new_array[pivot...XXX], target)
-    end
-
+    sub_answer = bsearch(nums.drop(pivot + 1), target)
+    (sub_answer.nil?) ? nil : (pivot + 1) + sub_answer
   end
 end
+
+bsearch([2, 3, 4, 5], 1)
+# p bsearch([1, 2, 3, 4, 5], 2)
+# p bsearch([1, 2, 3, 4, 5], 4)
+# p bsearch([1, 2, 3, 4, 5], 3)
+# p bsearch([1, 2, 3, 4, 5], 5)

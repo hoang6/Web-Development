@@ -11,7 +11,7 @@ def range(start_num, end_num)
 
 end
 
-p range(1, 10)
+# p range(1, 10)
 
 def iterative_sum(nums)
   nums.inject(:+)
