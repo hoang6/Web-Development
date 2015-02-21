@@ -1,16 +1,23 @@
 class Array
   def my_inject(accumulator = nil, &prc)
-    accumulator = self[0] if accumulator.nil?
-    self.each { |el| yield(accumulator, el) }
+    i = 0
 
+    if accumulator.nil?
+      accumulator = self.first
+      i += 1
+    end
+
+    while i < self.length
+      accumulator = prc.call(accumulator, self[i])
+      i += 1
+    end
+
+    accumulator
   end
 end
 
 def is_prime?(num)
-  (2...num).each do |factor|
-    return false if num % factor == 0
-  end
-  true
+  (2...num).none? { |factor| num % factor == 0 }
 end
 
 def primes(count)
@@ -63,6 +70,7 @@ end
 class String
   def symmetric_substrings
     sym_substrings = []
+
      (0..(self.length - 2)).each do |str_start|
        ((str_start + 1)..(self.length - 1)).each do |str_end|
         if self[str_start..str_end].reverse == self[str_start..str_end]
@@ -82,7 +90,7 @@ class Array
     elsif self.count == 1
       self
     else
-      # self.merge()
+      self.merge()
     end
   end
 

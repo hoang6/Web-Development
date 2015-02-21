@@ -5,6 +5,7 @@ def fib_recursive(n)
   #   [1]
   # elsif n == 2
   #   [1, 1]
+  # A more elegent way (the Ruby's way) to achive the same thing
   if n <= 2
     [0, 1].take(n)
   else
@@ -13,20 +14,17 @@ def fib_recursive(n)
   end
 end
 
-p fib_recursive(15)
-
 def fib_iterative(n)
-  if n == 0
-    fibs = []
-  elsif n == 1
-    fibs = [1]
-  elsif n == 2
-    fibs = [1,1]
+  if n <= 2
+    [0, 1].take(n)
   else
-    fibs = [1,1]
+    fibs = [0, 1]
     until fibs.count == n
       fibs << fibs[-2] + fibs[-1]
     end
   end
   fibs
 end
+
+# p fib_recursive(15)
+# p fib_iterative(15)
