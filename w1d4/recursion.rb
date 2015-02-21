@@ -1,29 +1,26 @@
 def range(start_num, end_num)
-  ary = []
 
-  return ary if start_num > end_num
-  # while start_num < end_num - 1
-    # start_num += 1
-  ary << (start_num)
-  ary += range(start_num + 1, end_num)
-  # end
-  ary
+  if start_num == end_num
+    return [end_num]
+  else
+    [start_num] + range(start_num + 1, end_num)
+  end
 
 end
-
-# p range(1, 10)
 
 def iterative_sum(nums)
   nums.inject(:+)
 end
 
 def recursive_sum(nums)
-  if nums.count < 2
+  if nums.count == 1
     return nums[0]
   else
     nums.shift + recursive_sum(nums)
   end
 end
+
+p recursive_sum([1, 2, 3, 4, 5])
 
 def exponent1(base, num)
   if num == 0

@@ -1,5 +1,4 @@
 def bsearch(nums, target)
-  p nums
   return nil if nums.count == 0
 
   pivot = nums.length / 2

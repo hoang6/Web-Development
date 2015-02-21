@@ -1,15 +1,19 @@
 def fib_recursive(n)
-  if n == 0
-    []
-  elsif n == 1
-    [1]
-  elsif n == 2
-    [1,1]
+  # if n == 0
+  #   []
+  # elsif n == 1
+  #   [1]
+  # elsif n == 2
+  #   [1, 1]
+  if n <= 2
+    [0, 1].take(n)
   else
-    fib_recursive(n - 1) << fib_recursive(n - 1)[-1] + fib_recursive(n - 1)[-2]
+    fibs = fib_recursive(n - 1)
+    fibs << fibs[-2] + fibs[-1]
   end
 end
 
+p fib_recursive(15)
 
 def fib_iterative(n)
   if n == 0
