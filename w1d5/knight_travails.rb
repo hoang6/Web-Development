@@ -7,60 +7,63 @@ class KnightPathFinder
     @start_position = position
   end
 
-  def self.valid_moves(pos)
-    valid_pos = []
-    valid_pos << [(pos[0] - 1),(pos[1] + 2)]
-    valid_pos << [(pos[0] + 1),(pos[1] + 2)]
-    valid_pos << [(pos[0] + 2),(pos[1] + 1)]
-    valid_pos << [(pos[0] + 2),(pos[1] - 1)]
-    valid_pos << [(pos[0] + 1),(pos[1] - 2)]
-    valid_pos << [(pos[0] - 1),(pos[1] - 2)]
-    valid_pos << [(pos[0] - 2),(pos[1] - 1)]
-    valid_pos << [(pos[0] - 2),(pos[1] + 1)]
+  def self.valid_moves(position)
+    valid_positions = []
+    (-1..2).each do |x|
+      (-1..2).each do |y|
+        valid_positions << [(position[0] + x),(position[1] + y)]
+      end
+    end
+    valid_positions
   end
 
-  def new_move_positions(pos)
-    all_positions = KnightPathFinder.valid_moves(pos)
+  def new_move_positions(position)
+    all_positions = KnightPathFinder.valid_moves(position)
     all_positions = all_positions.select do |pos|
       !@visited_positions.include?(pos) && valid_pos?(pos)
     end
     @visited_positions += all_positions
+
     all_positions
   end
 
-  def valid_pos?(pos)
-    return false if (pos[0] < 0 || pos[0] > 7) || (pos[1] < 0 || pos[1] > 7)
+  def valid_pos?(position)
+    return false if (position[0] < 0 || position[0] > 7) || (position[1] < 0 || position[1] > 7)
+
     true
   end
 
   def build_move_tree
     @visited_positions = [@start_position.dup]
+
     @move_tree = PolyTreeNode.new(@start_position)
     queue = [@move_tree]
 
     while @visited_positions.length < 64
-      # p "visited positions: #{@visited_positions}"
-      curr_node = queue.pop
-      possible_moves = new_move_positions(curr_node.value)
-      possible_moves_nodes = positions_to_nodes(possible_moves)
+      current_node = queue.pop
+      possible_moves = new_move_positions(current_node.value)
+      possible_moves_nodes = create_nodes(possible_moves)
+
       possible_moves_nodes.each do |node|
-        node.parent = curr_node
+        node.parent = current_node
         queue.unshift(node)
       end
     end
   end
 
-  def positions_to_nodes(positions_array)
+  def create_nodes(positions)
     nodes = []
-    positions_array.each do |pos|
+    positions.each do |pos|
       nodes << PolyTreeNode.new(pos)
     end
+
     nodes
   end
 
-  def find_path(end_pos)
+  def find_path(end_position)
     build_move_tree
-    target_node = @move_tree.dfs(end_pos)
+    target_node = @move_tree.dfs(end_position)
+
     target_node.trace_path_back.reverse
   end
 end
@@ -71,7 +74,6 @@ class PolyTreeNode
     @parent = nil
     @children = []
     @value = value
-    @checked = 0
   end
 
   def parent
@@ -98,12 +100,14 @@ class PolyTreeNode
 
   def add_child(child_node)
     @children << child_node
+
     child_node.parent = self
   end
 
   def remove_child(child_node)
     raise "Given node is not a child" if !@children.include?(child_node)
     child_node.parent = nil
+
     @children.delete(child_node)
   end
 
@@ -117,6 +121,7 @@ class PolyTreeNode
       local_result = child.dfs(target_value)
       return local_result if local_result != nil
     end
+
     nil
   end
 
@@ -125,7 +130,6 @@ class PolyTreeNode
     queue << self
 
     loop do
-
       node = queue.pop
       if node.value == target_value
         return node
@@ -146,10 +150,9 @@ class PolyTreeNode
       traces << current_node.value
       current_node = current_node.parent
     end
+
     traces
-
   end
-
 
 end
 

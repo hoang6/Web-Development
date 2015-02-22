@@ -4,7 +4,6 @@ class PolyTreeNode
     @parent = nil
     @children = []
     @value = value
-    @checked = 0
   end
 
   def parent
@@ -46,10 +45,12 @@ class PolyTreeNode
     elsif @children.empty?
       return nil
     end
+
     @children.each do |child|
       local_result = child.dfs(target_value)
       return local_result if local_result != nil
     end
+
     nil
   end
 
@@ -58,7 +59,6 @@ class PolyTreeNode
     queue << self
 
     loop do
-
       node = queue.pop
       if node.value == target_value
         return node
@@ -69,8 +69,15 @@ class PolyTreeNode
       end
       return nil if queue.empty?
     end
-
   end
 
-
 end
+
+a = PolyTreeNode.new('a')
+b = PolyTreeNode.new('b')
+c = PolyTreeNode.new('c')
+
+b.parent = a
+c.parent = a
+
+p c.dfs('c')
