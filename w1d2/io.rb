@@ -32,7 +32,6 @@ def shuffle_file
   f = File.open("#{filename}-shuffled.txt", "w")
   f.puts contents
   f.close
-
 end
 
 shuffle_file

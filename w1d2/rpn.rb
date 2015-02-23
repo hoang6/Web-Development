@@ -91,8 +91,10 @@ def run
 
   # Second method
   # str = ARGV[0]
+  # str = File.readlines(str).join
 
   # Third method
+  # str = ''
   # File.open('rpn_string.txt') do |f|
   #   str = f.gets.chomp
   # end
