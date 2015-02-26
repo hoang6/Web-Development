@@ -1,22 +1,35 @@
-def merge_sort(nums)
-  if nums.count == 0
-    return []
-  elsif nums.count == 1
-    return [nums.first]
+# def merge_sort(nums)
+#   if nums.count <= 1
+#     return nums
+#   else
+#     pivot = nums.count / 2
+#     left = nums.take(pivot)
+#     right = nums.drop(pivot)
+#     merge(merge_sort(left), merge_sort(right))
+#   end
+# end
+#
+# def merge(left, right)
+#   if left.first <= right.first
+#     [left.shift] + [right.shift] + left + right
+#   else
+#     [right.shift] + [left.shift] + left + right
+#   end
+# end
+#
+# p merge_sort([1, 5, 4, 2, 7, 5])
+
+
+def quick_sort(nums)
+  if nums.count <= 1
+    return nums
   else
-    pivot = nums.count / 2
-    nums1 = nums.take(pivot)
-    nums2 = nums.drop(pivot)
-    merge(merge_sort(nums1), merge_sort(nums2))
+    pivot = nums.sample
+    left = nums.select { |num| num < pivot}
+    right = nums.select { |num| num > pivot}
+
+    quick_sort(left) + [pivot] + quick_sort(right)
   end
 end
 
-def merge(nums1, nums2)
-  if nums1.first <= nums2.first
-    [nums1.shift] + [nums2.shift] + nums1 + nums2
-  else
-    [nums2.shift] + [nums1.shift] + nums1 + nums2
-  end
-end
-
-p merge_sort([1, 5, 4, 2, 7, 5])
+p quick_sort([1, 5, 4, 2, 7, 5])

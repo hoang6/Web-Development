@@ -21,7 +21,7 @@ class WordChainer
     #   end
     # end
 
-    (0..word.length).each do |pos|
+    (0...word.length).each do |pos|
       ('a'..'z').each do |new_letter|
 
         new_word = word.dup
@@ -41,6 +41,7 @@ class WordChainer
     @all_seen_words = {source => nil}
 
     while !@current_words.empty?
+      break if @all_seen_words.include?(target)
       @current_words = explore_current_words
     end
 
@@ -61,9 +62,9 @@ class WordChainer
       end
     end
 
-    # new_current_words.each do |word|
-    #   print "#{word} from #{@all_seen_words[word]} |"
-    # end
+    new_current_words.each do |word|
+      print "#{word} from #{@all_seen_words[word]} |"
+    end
     new_current_words
   end
 

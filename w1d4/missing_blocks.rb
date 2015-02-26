@@ -5,7 +5,6 @@ class Array
   end
 
   def my_map(&prc)
-    index = 0
     mapped_array = []
 
     self.my_each do |el|

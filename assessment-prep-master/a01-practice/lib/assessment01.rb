@@ -47,7 +47,8 @@ def factorials_rec(num)
   if num == 1
     [1]
   else
-    factorials_rec(num - 1) << (num - 1) * factorials_rec(num - 1)[-1]
+    factorial = factorials_rec(num - 1)
+    factorial << (num - 1) * factorial[-1]
   end
 end
 
@@ -85,19 +86,33 @@ end
 
 class Array
   def merge_sort(&prc)
-    if self.empty?
-      []
-    elsif self.count == 1
+
+    prc = Proc.new { |x, y| x <=> y } unless prc
+
+    if self.count <= 1
       self
     else
-      self.merge()
+      pivot = self.length / 2
+      left = self.take(pivot)
+      right = self.drop(pivot)
+      Array.merge(left.merge_sort(&prc), right.merge_sort(&prc), &prc)
     end
   end
 
   private
   def self.merge(left, right, &prc)
-     if !prc.nil?
-       prc.call(left, right)
-     end
+    merged_array = []
+    until left.empty? || right.empty?
+      if prc.call(left.first, right.first) < 1
+        merged_array << left.shift
+      elsif
+        merged_array << right.shift
+      end
+    end
+
+    merged_array + left + right
   end
 end
+
+
+p [2, 3, 5, 7, 1, 9, 4, 8].merge_sort()

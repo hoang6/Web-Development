@@ -1,4 +1,5 @@
 require 'byebug'
+require 'yaml'
 
 class Tile
   attr_reader :pos, :board
@@ -161,8 +162,6 @@ class Board
 
     if mark.downcase == 'r'
       tile = @tiles.select { |tile| tile.pos == coords }
-
-      # p tile
       tile.first.reveal
 
     elsif mark.downcase == 'f'
@@ -195,12 +194,32 @@ class Board
     @lost
   end
 
+  def save?(input)
+    contents = self.to_yaml
+    if input == 'y'
+      file = File.open('minesweeper.yml', 'w')
+      file.puts contents
+      file.close
+
+      exit
+    end
+  end
+
+  def self.load
+    YAML.load_file('minesweeper.yml')
+  end
+
   def run
     until won? || lost?
       display_board
       handle_move(get_move)
       # puts "Won: #{won?} | Lost: #{lost?}"
+
+      puts "Want to save game for later?"
+      input = gets.chomp.downcase
+      save?(input)
     end
+
 
     if won?
       display_board
@@ -213,5 +232,5 @@ class Board
 
 end
 
-game = Board.new(2, 2)
-game.run
+# game = Board.new(9, 5)
+# game.run
