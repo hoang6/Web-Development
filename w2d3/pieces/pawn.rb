@@ -26,7 +26,8 @@ class Pawn < Piece
     dirs.each do |dir|
       row, col = dir
       new_pos = [@pos[0] + row, @pos[1] + col]
-
+      next if !in_bound?(new_pos)
+      # strange, since the condition below already makes sure pawn stays inbound
       possible_moves << new_pos if self.blocked_by_opp?(new_pos)
     end
 
@@ -77,7 +78,7 @@ class Pawn < Piece
 
     if in_bound?(short_move) && @board[short_move].nil?
       possible_moves << short_move
-      possible_moves << long_move if jump_allowed && @board[short_move].nil?
+      possible_moves << long_move if jump_allowed && @board[long_move].nil?
     end
 
     possible_moves

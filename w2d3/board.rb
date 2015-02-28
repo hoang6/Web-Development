@@ -10,7 +10,7 @@ require_relative './pieces/sliding'
 require 'colorize'
 
 class Board
-  class InvalidMovesError < StandardError ; end
+  class InvalidMoveError < StandardError ; end
 
   attr_reader :grid
 
@@ -36,14 +36,14 @@ class Board
     other_color = (color == 'white' ? 'black' : 'white')
 
     pieces(other_color).each do |piece|
-      return true if piece.moves.include?(king.pos)
+      return true if piece.moves.include?(king_pos)
     end
 
     false
   end
 
   def check_mate?(color)
-    return false unless in_check?(color)
+    # return false unless in_check?(color) # this actually causes problem!
 
     pieces(color).all? do |piece|
       piece.valid_moves.empty?
@@ -81,13 +81,13 @@ class Board
   def move(color, start_pos, end_pos)
 
     current_piece = self[start_pos]
-    raise InvalidMovesError.new('wrong piece, please choose again!') if color != current_piece.color
-    raise InvalidMovesError.new('invalid move!') unless current_piece.in_bound?(end_pos)
-    raise InvalidMovesError.new('position is occupied') if current_piece.blocked_by_self?(end_pos)
+    raise InvalidMoveError.new('wrong piece, please choose again!') if color != current_piece.color
+    raise InvalidMoveError.new('invalid move!') unless current_piece.in_bound?(end_pos)
+    raise InvalidMoveError.new('position is occupied') if current_piece.blocked_by_self?(end_pos)
 
     possible_moves = current_piece.valid_moves
 
-    raise InvalidMovesError.new('invalid move') unless possible_moves.include?(end_pos)
+    raise InvalidMoveError.new('invalid move') unless possible_moves.include?(end_pos)
 
     if possible_moves.include?(end_pos)
       self[start_pos] = nil

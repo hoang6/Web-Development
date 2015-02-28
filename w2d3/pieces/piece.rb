@@ -33,9 +33,7 @@ class Piece
   end
 
   def in_bound?(pos)
-    x = pos[0]
-    y = pos[1]
-    x >= 0 && x < 8 && y >= 0 && y < 8
+    pos.all? { |coord| coord.between?(0, 7) }
   end
 
   def blocked_by_self?(pos)

@@ -31,6 +31,8 @@ class HumanPlayer
     col_end = letter_to_number(input[1]).to_i
     end_position = [row_end, col_end]
 
+    puts "Player #{@color}: #{start_position} -> #{end_position}"
+
     [start_position, end_position]
   end
 
