@@ -21,11 +21,11 @@ require_relative 'human_player'
        puts "#{@current_player.color} from #{start_pos} to #{end_pos}"
 
        @board.move(@current_player.color, start_pos, end_pos)
-       
+
        @current_player = (@current_player.color == 'white' ? @player2 : @player1 )
 
 
-       sleep(1.0 / 10)
+       sleep(1.0 / 1)
      end
 
      if @board.check_mate?('white')

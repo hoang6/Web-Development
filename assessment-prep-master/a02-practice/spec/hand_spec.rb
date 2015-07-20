@@ -9,7 +9,7 @@ describe Hand do
         Card.new(:spades, :three)
       ]
 
-      deck = double("deck")
+      deck = double("deck") #What does this mean? ok!
       expect(deck).to receive(:take).with(2).and_return(deck_cards)
 
       hand = Hand.deal_from(deck)
