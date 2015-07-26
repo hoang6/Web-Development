@@ -17,7 +17,7 @@
   }
 
   View.NUM_COL = 3;
-  View.NUM_DISK = 3;
+  View.NUM_DISK = 5;
 
   View.prototype.clickTower = function(event) {
     var clickedTowerIdx = $(event.currentTarget).index();

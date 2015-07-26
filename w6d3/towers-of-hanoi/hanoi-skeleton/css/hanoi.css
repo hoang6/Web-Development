@@ -29,12 +29,12 @@ h1 {
 
 .hanoi {
   margin: 30px auto;
-  width: 600px;
+  width: 1000px;
 }
 
 ul {
   float: left;
-  width: 180px;
+  width: 300px;
   padding: 0 0 10px 0;
   border-bottom: 10px solid black;
   cursor: pointer;
@@ -70,6 +70,14 @@ li.disk-2 {
 
 li.disk-3 {
   width: 180px;
+}
+
+li.disk-4 {
+  width: 240px;
+}
+
+li.disk-5 {
+  width: 300px;
 }
 
 .game-over ul {

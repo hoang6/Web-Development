@@ -1,0 +1,36 @@
+.carousel {
+  /* set desired height and width according to image size */
+  height: 450px;
+  width: 800px;
+}
+
+.carousel > .items {
+  /* relative so that inner absolutes are against the items, not the
+     viewport */
+  position: relative;
+  overflow: hidden;
+
+  /* set height to be the same as carousel */
+  height: 100%;
+  width: 100%;
+}
+
+.carousel > .items > *:not(.active) {
+  display: none;
+}
+
+.carousel > .items > *.active {
+  position: absolute;
+  left: 0%;
+  width: 100%;
+
+  transition: left 500ms linear;
+}
+
+.carousel > .items > *.active.left {
+  left: -100%;
+}
+
+.carousel > .items > *.active.right {
+  left: 100%;
+}
