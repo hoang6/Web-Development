@@ -1,3 +1,8 @@
+require_relative 'question_like'
+require_relative 'question_like'
+require_relative 'question_follow'
+require_relative 'user'
+
 class Question
   def self.find_by_id(id)
     question_data = QuestionDatabase.instance.execute(<<-SQL, id)
@@ -52,6 +57,10 @@ class Question
 
   def num_likes
     QuestionLike.num_likes_for_question_id(id)
+  end
+
+  def self.most_liked(n)
+    QuestionLike.most_liked_questions(n)
   end
 
 end

@@ -45,4 +45,19 @@ class User
   def liked_questions
     QuestionFollow.liked_questions_for_user_id(id)
   end
+
+  def self.average_karma
+    QuestionDatabase.instance.execute(<<-SQL, author_id: self.id)
+      SELECT
+        COUNT(question_likes.author_id)
+      JOIN
+        questions
+      LEFT OUTER JOIN
+        question_likes ON question_likes.question_id = questions.id
+      WHERE
+        question.author_id = :author_id
+    SQL
+
+    # questions_data.map { |question_data| Question.new(question_data) }
+  end
 end

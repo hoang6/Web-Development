@@ -58,9 +58,9 @@ class QuestionFollow
       JOIN
         question_follows ON question_follows.question_id = questions.id
       GROUP BY
-        question_follows.question_id
+        questions.id
       ORDER BY
-        COUNT(question_follows.author_id)
+        COUNT(*) DESC
       LIMIT
         n
     SQL
