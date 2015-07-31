@@ -12,6 +12,21 @@ class ShortenedUrl < ActiveRecord::Base
     primary_key: :id
   )
 
+  has_many(
+    :visits,
+    class_name: 'Visit',
+    foreign_key: :shortened_url_id;
+    primary_key: :id
+  )
+
+  # How does it know what "visitor" is?
+  has_many(
+    :visitors,
+    through: :visits,
+    source: :visitor
+  )
+
+
   def self.random_code
     # begin
     #   random_code = SecureRandom.urlsafe_base64(16)
@@ -20,6 +35,7 @@ class ShortenedUrl < ActiveRecord::Base
     # return random_code
     # end
 
+    # More elegant
     loop do
       random_code = SecureRandom.urlsafe_base64(16)
       return random_code unless ShortenedUrl.exists?(short_url: random_code)
@@ -33,4 +49,22 @@ class ShortenedUrl < ActiveRecord::Base
       short_url: ShortenedUrl.random_code
     )
   end
+
+  def num_clicks
+    visits.count
+  end
+
+  def num_uniques
+    visits
+      .select("visitor_id").distinct.count
+  end
+
+  def num_recent_uniques
+    visits
+      .select("visitor_id")
+      .where("created_at > ?", 10.minutes.ago)
+      .distinct
+      .count
+  end
+
 end
