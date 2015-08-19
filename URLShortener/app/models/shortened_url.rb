@@ -15,11 +15,10 @@ class ShortenedUrl < ActiveRecord::Base
   has_many(
     :visits,
     class_name: 'Visit',
-    foreign_key: :shortened_url_id;
+    foreign_key: :shortened_url_id,
     primary_key: :id
   )
 
-  # How does it know what "visitor" is?
   has_many(
     :visitors,
     through: :visits,

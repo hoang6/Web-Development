@@ -14,4 +14,11 @@ class User < ActiveRecord::Base
     foreign_key: :visitor_id,
     primary_key: :id
   )
+
+  def self.create_user!(email)
+    User.create!(
+      email: email
+    )
+  end
+
 end
